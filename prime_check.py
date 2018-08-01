@@ -1,4 +1,4 @@
-SMALLPRIMES = [2,3,5,7,11,13,17,19,23]
+SMALLPRIMES = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47]
 LSP = len(SMALLPRIMES)
 ndiv = lambda d, n: n % d != 0
 all_true = lambda a, b: a and b
@@ -12,7 +12,7 @@ def isprime(n):
     if not reduce(all_true, map(ndiv, SMALLPRIMES, nn), True):
         return False
     sn = n ** 0.5
-    S = 24
+    S = 48
     while S + 5 < sn:
         for i in [1,5]:
             if not ndiv(S+i, n):
@@ -55,26 +55,22 @@ def tryInserting_( n, k ):
 ### xxxx[x]x (6 digits)
 ### xx[x]xx (5 digits)
 
+digits = [3,1,4,1,5,9,2,6,5,3]
+digits.reverse()
+
 ### Generate a four-digit prime number
-n = 1002
+n = 1002 # this should depend on the digits in use, but CBA right now.
 out = []
 while n < 10002:
     for i in [1,5]:
         if isprime(n+i):
             # try inserting
-            ok1 = tryInserting( n+i, 3 )
-            ok2 = reduce(lambda a, b: a+b, tryInserting( ok1, 5), [])            
-            ok3 = reduce(lambda a, b: a+b, tryInserting( ok2, 6), [])
-            ok4 = reduce(lambda a, b: a+b, tryInserting(ok3, 2), [])
-            ok5 = reduce(lambda a, b: a+b, tryInserting(ok4, 9), [])
-            ok6 = reduce(lambda a, b: a+b, tryInserting(ok5, 5), [])
-            ok7 = reduce(lambda a, b: a+b, tryInserting(ok6, 1), [])
-            ok8 = reduce(lambda a, b: a+b, tryInserting(ok7, 4), [])
-            ok9 = reduce(lambda a, b: a+b, tryInserting(ok8, 1), [])
-            ok = reduce(lambda a, b: a+b, tryInserting(ok6, 3), [])
+            ok = tryInserting( n+i, digits[0] )
+            for j in digits[1:]:
+                ok = reduce(lambda a, b: a+b, tryInserting( ok, j), [])            
             print n+i, ok
             out += ok
     n += 6
         
-unittest.main()
+#unittest.main()
     
